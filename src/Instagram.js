@@ -8,13 +8,14 @@ import { createSwitchNavigator, createAppContainer, createBottomTabNavigator, cr
 import IconMci from 'react-native-vector-icons/MaterialCommunityIcons'
 import IconFeather from 'react-native-vector-icons/Feather'
 import IconAnt from 'react-native-vector-icons/AntDesign'
+import IconFA5 from 'react-native-vector-icons/FontAwesome5'
 
 const Tabs = createBottomTabNavigator({
   feed: {
     screen: MainFeed,
     navigationOptions: {
       tabBarIcon: ({ tintColor, focused }) => (
-        focused ? <IconMci name="home" size={35} /> : <IconMci name="home-outline" size={30} />
+        focused ? <IconMci name="home" size={35} /> : <IconMci name="home-outline" size={33} />
       ),
       showLabel: false
     }
@@ -23,7 +24,7 @@ const Tabs = createBottomTabNavigator({
     screen: Explore,
     navigationOptions: {
       tabBarIcon: ({ tintColor, focused }) => (
-        focused ? <IconFeather name="search" size={31} /> : <IconAnt name="search1" size={30} />
+        focused ? <IconFeather name="search" size={31} iconStyle={{ fontWeight: 'bold', }} /> : <IconAnt name="search1" size={30} />
       ),
     }
   },
@@ -46,8 +47,8 @@ const Tabs = createBottomTabNavigator({
   profile: {
     screen: Profile,
     navigationOptions: {
-      tabBarIcon: ({ tintColor }) => (
-        <IconFeather name="user" size={30} />
+      tabBarIcon: ({ tintColor, focused }) => (
+        focused ? <IconFA5 name="user-alt" size={24.5} /> : <IconFeather name="user" size={30} />
       ),
     }
   }

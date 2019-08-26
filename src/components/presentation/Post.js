@@ -46,7 +46,7 @@ class Post extends Component {
             ? "https://thumbs-prod.si-cdn.com/d4e3zqOM5KUq8m0m-AFVxuqa5ZM=/800x600/filters:no_upscale():focal(554x699:555x700)/https://public-media.si-cdn.com/filer/a4/04/a404c799-7118-459a-8de4-89e4a44b124f/img_1317.jpg"
             : "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/colorful-of-dahlia-pink-flower-in-beautiful-garden-royalty-free-image-825886130-1554743243.jpg?crop=0.669xw:1.00xh;0.331xw,0&resize=640:*"
         const imageUri = imageSelection
-        const HeartIconColor = (this.state.liked) ? "rgb(252,61,57)" : null
+        const HeartIconColor = (this.state.liked) ? "#ED4956" : null
         return (
             <View>
                 <View style={styles.userBar}>
@@ -72,7 +72,7 @@ class Post extends Component {
                 <View style={styles.iconBar}>
                     <View style={styles.icon}>
                         {(this.state.liked)
-                            ? <IconAnt size={30} name="heart" color="red" />
+                            ? <IconAnt size={30} name="heart" color="#ED4956" />
                             : <IconAnt size={30} name="hearto" />
                         }
                     </View>
