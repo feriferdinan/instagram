@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import {
-  StyleSheet,
-  View
-} from 'react-native';
-import { MainFeed, Login, Camera, Profile, Register, Explore, Notification } from "./components/screens"
+import { StyleSheet } from 'react-native';
+import SplashScreen from 'react-native-splash-screen'
+
+import { MainFeed, Login, Profile, Register, Explore, Notification, AddPost } from "./components/screens"
 import { createSwitchNavigator, createAppContainer, createBottomTabNavigator, createStackNavigator } from 'react-navigation';
 import IconMci from 'react-native-vector-icons/MaterialCommunityIcons'
 import IconFeather from 'react-native-vector-icons/Feather'
@@ -14,8 +13,8 @@ const Tabs = createBottomTabNavigator({
   feed: {
     screen: MainFeed,
     navigationOptions: {
-      tabBarIcon: ({ tintColor, focused }) => (
-        focused ? <IconMci name="home" size={35} /> : <IconMci name="home-outline" size={33} />
+      tabBarIcon: ({ focused }) => (
+        focused ? <IconMci name="home" size={28} /> : <IconMci name="home-outline" size={26} />
       ),
       showLabel: false
     }
@@ -23,32 +22,32 @@ const Tabs = createBottomTabNavigator({
   explore: {
     screen: Explore,
     navigationOptions: {
-      tabBarIcon: ({ tintColor, focused }) => (
-        focused ? <IconFeather name="search" size={31} iconStyle={{ fontWeight: 'bold', }} /> : <IconAnt name="search1" size={30} />
+      tabBarIcon: ({ focused }) => (
+        focused ? <IconFeather name="search" size={26} /> : <IconAnt name="search1" size={25} />
       ),
     }
   },
-  camera: {
-    screen: Camera,
+  addpost: {
+    screen: AddPost,
     navigationOptions: {
-      tabBarIcon: ({ tintColor }) => (
-        <IconFeather name="plus-square" size={30} />
+      tabBarIcon: ({ }) => (
+        <IconFeather name="plus-square" size={25} />
       ),
     }
   },
   notification: {
     screen: Notification,
     navigationOptions: {
-      tabBarIcon: ({ tintColor, focused }) => (
-        focused ? <IconAnt name="heart" size={30} color="black" /> : <IconAnt name="hearto" size={30} />
+      tabBarIcon: ({ focused }) => (
+        focused ? <IconAnt name="heart" size={25} color="black" /> : <IconAnt name="hearto" size={25} />
       ),
     }
   },
   profile: {
     screen: Profile,
     navigationOptions: {
-      tabBarIcon: ({ tintColor, focused }) => (
-        focused ? <IconFA5 name="user-alt" size={24.5} /> : <IconFeather name="user" size={30} />
+      tabBarIcon: ({ focused }) => (
+        focused ? <IconFA5 name="user-alt" size={19.5} /> : <IconFeather name="user" size={25} />
       ),
     }
   }
@@ -65,7 +64,7 @@ const Tabs = createBottomTabNavigator({
         backgroundColor: 'white',
         elevation: 0,
         borderTopColor: '#c6c7cc',
-        borderTopWidth: 1
+        borderTopWidth: StyleSheet.hairlineWidth
       }
     }
   }
@@ -86,6 +85,10 @@ const AppContainer = createAppContainer(MainStack);
 
 
 class Instagram extends Component {
+  componentDidMount() {
+    SplashScreen.hide();
+  }
+
   render() {
     return <AppContainer />
   }

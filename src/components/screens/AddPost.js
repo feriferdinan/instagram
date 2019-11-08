@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native'
 
-class Camera extends Component {
+class AddPost extends Component {
 
     render() {
         return (
             <TouchableOpacity
                 style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-                <Text>Camera</Text>
+                <Text>AddPost</Text>
             </TouchableOpacity>
         )
     }
 }
 
-export default Camera;
+export default AddPost;
