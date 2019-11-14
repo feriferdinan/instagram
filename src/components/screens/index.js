@@ -6,6 +6,7 @@ import Register from "./Register"
 import Explore from "./Explore"
 import Notification from "./Notification"
 import DirectMessage from "./DirectMessage"
+import Comment from "./Comment"
 
 export {
     MainFeed,
@@ -15,5 +16,6 @@ export {
     Register,
     Explore,
     Notification,
-    DirectMessage
+    DirectMessage,
+    Comment
 }

@@ -5,7 +5,8 @@ import {
     Text,
     Image,
     Dimensions,
-    TouchableOpacity
+    TouchableOpacity,
+    TouchableWithoutFeedback
 } from 'react-native';
 import config from '../../config';
 
@@ -19,6 +20,13 @@ import * as Animatable from 'react-native-animatable'
 const AnimatedIconAnt = Animatable.createAnimatableComponent(IconAnt)
 const AnimatedIconFA = Animatable.createAnimatableComponent(IconFA)
 
+import TimeAgo from 'react-native-timeago';
+let moment = require('moment'); //load moment module to set local language
+require('moment/locale/id'); //for import moment local language file during the application build
+moment.locale('id');//set moment local language to id
+
+import ReadMore from 'react-native-read-more-text'
+
 class Post extends Component {
 
     constructor() {
@@ -27,14 +35,14 @@ class Post extends Component {
             screenWidth: Dimensions.get("window").width,
             screenHeight: Dimensions.get("window").height,
             liked: false,
-            totalLikes: 0,
+            totalLikes: 894.808,
             saved: false
         }
     }
 
-    componentWillMount() {
+    componentDidMount() {
         this.setState({
-            totalLikes: this.props.item.likes.count,
+            // totalLikes: this.props.item.likes.count,
             liked: this.props.item.user_has_liked
         })
     }
@@ -86,6 +94,19 @@ class Post extends Component {
         this.smallAnimatedIconFA = ref
     }
 
+
+    _renderTruncatedFooter = (handlePress) => {
+        return (
+            <Text style={{ color: "#aeaeaeae" }} onPress={handlePress}>
+                ... lainnya
+            </Text>
+        );
+    }
+
+    _renderRevealedFooter = (handlePress) => {
+    }
+
+
     animateIcon = () => {
         const { liked } = this.state
         this.largeAnimatedIcon.stopAnimation()
@@ -100,28 +121,33 @@ class Post extends Component {
             }
             this.largeAnimatedIcon.bounceIn()
             this.smallAnimatedIcon.bounceIn()
-                .then(() => {
-                    this.largeAnimatedIcon.bounceOut()
-                })
+                .then(() => this.largeAnimatedIcon.bounceOut())
 
         }
     }
 
     render() {
         const { liked, totalLikes, saved } = this.state
+        const { item } = this.props
         const imageHeight = Math.floor(this.state.screenWidth * 1)
-        const imageSelection = (this.props.item % 2 == 0)
+        const imageSelection = (item % 2 == 0)
             ? "https://thumbs-prod.si-cdn.com/d4e3zqOM5KUq8m0m-AFVxuqa5ZM=/800x600/filters:no_upscale():focal(554x699:555x700)/https://public-media.si-cdn.com/filer/a4/04/a404c799-7118-459a-8de4-89e4a44b124f/img_1317.jpg"
             : "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/colorful-of-dahlia-pink-flower-in-beautiful-garden-royalty-free-image-825886130-1554743243.jpg?crop=0.669xw:1.00xh;0.331xw,0&resize=640:*"
-        const imageUri = imageSelection
+        const created_time = new Date(item.created_time * 1000).toGMTString()
+
         return (
-            <View>
+            <View style={{ backgroundColor: "#fff" }}>
                 <View style={styles.userBar}>
                     <View style={{ flexDirection: "row", alignItems: "center" }}>
-                        <Image
-                            style={styles.userPic}
-                            source={{ uri: this.props.item.user.profile_picture }} />
-                        <Text style={styles.userName}>{this.props.item.user.username}</Text>
+                        <View style={{ width: 30, height: 30, borderRadius: 50, backgroundColor: "#aeaeae" }}>
+                            <Image
+                                style={styles.userPic}
+                                source={{ uri: item.user.profile_picture }} />
+                        </View>
+                        <View style={{ flexDirection: "column", justifyContent: "center" }}>
+                            <Text style={styles.userName}>{item.user.username}</Text>
+                            <Text style={{ marginHorizontal: 10, fontSize: 12 }}>{item.location.name}</Text>
+                        </View>
                     </View>
                     <TouchableOpacity
                         onPress={() => alert("more clicked")}
@@ -144,9 +170,14 @@ class Post extends Component {
                         duration={500}
                         delay={200}
                     />
-                    <Image
-                        style={{ width: this.state.screenWidth, height: imageHeight }}
-                        source={{ uri: this.props.item.images.standard_resolution.url }} />
+                    {
+                        (item.type === "image") ?
+                            <Image
+                                style={{ width: this.state.screenWidth, height: imageHeight }}
+                                source={{ uri: item.images.standard_resolution.url }} />
+                            :
+                            null
+                    }
                 </TouchableOpacity>
                 <View style={styles.iconBar}>
                     <View style={{ flexDirection: "row" }}>
@@ -163,7 +194,7 @@ class Post extends Component {
                             />
                         </TouchableOpacity>
                         <TouchableOpacity
-                            onPress={() => alert("comment clicked")}
+                            onPress={() => this.props.navigation.navigate("Comment")}
                             activeOpacity={1}
                             style={styles.wrapperIcon}>
                             <IconEvil size={38} name="comment" style={{ paddingTop: 8 }} />
@@ -191,12 +222,28 @@ class Post extends Component {
                     {(totalLikes == 0)
                         ? null
                         : <View style={{ width: 100 + "%" }}>
-                            <Text style={styles.userName}>{this.state.totalLikes} Like</Text>
+                            <Text style={styles.userName}>{this.state.totalLikes}&nbsp;suka</Text>
                         </View>}
-                    <View style={{ width: 100 + "%" }}>
-                        <Text style={styles.userName}>feri_ferdinan_  <Text style={{ fontWeight: "normal" }}>Ad ullamco labore ipsum cillum elit minim sunt aliquip.</Text></Text>
-
-                    </View>
+                    <TouchableWithoutFeedback style={{ width: 100 + "%" }}>
+                        <View style={{ marginHorizontal: 10 }}>
+                            <ReadMore
+                                numberOfLines={2}
+                                renderTruncatedFooter={this._renderTruncatedFooter}
+                                renderRevealedFooter={this._renderRevealedFooter}
+                                onReady={this._handleTextReady}>
+                                <Text style={styles.userName}>{item.user.username} <Text onPress={() => this.props.navigation.navigate("Comment")} style={{ fontWeight: "100" }}>
+                                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Incidunt sit illum cum fuga nam placeat
+                                    sapiente velit dolores voluptatem? Facilis eius facere temporibus ex repellat repellendus aliquid,
+                                    harum deleniti maxime!{item.caption.text}
+                                </Text>
+                                </Text>
+                            </ReadMore>
+                        </View>
+                    </TouchableWithoutFeedback>
+                    <TouchableWithoutFeedback onPress={() => this.props.navigation.navigate("Comment")}>
+                        <Text style={{ color: "#aeaeae", marginHorizontal: 10 }}>Lihat semua 24 komentar</Text>
+                    </TouchableWithoutFeedback>
+                    <Text style={{ marginVertical: 2, marginHorizontal: 10, fontSize: 9, color: "#aeaeae" }}><TimeAgo time={created_time} interval={20000} /></Text>
                 </View>
             </View >
         );
@@ -207,14 +254,16 @@ const styles = StyleSheet.create({
     userBar: {
         width: 100 + "%",
         height: config.styleConstants.rowHeight,
+        borderBottomColor: "#aeaeae",
+        borderBottomWidth: StyleSheet.hairlineWidth,
         backgroundColor: "rgb(255,255,255)",
         flexDirection: "row",
         paddingHorizontal: 10,
         justifyContent: "space-between"
     },
     userPic: {
-        height: 35,
-        width: 35,
+        height: 30,
+        width: 30,
         borderRadius: 30
     },
     iconBar: {
@@ -231,7 +280,7 @@ const styles = StyleSheet.create({
         width: 50
     },
     userName: {
-        marginLeft: 10,
+        marginHorizontal: 10,
         fontWeight: "bold"
     },
     card: {

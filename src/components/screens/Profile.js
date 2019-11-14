@@ -1,17 +1,17 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity, StatusBar, StyleSheet, Image, Linking, ScrollView, Dimensions } from 'react-native'
-import { TabView, SceneMap } from 'react-native-tab-view';
+import { View, Text, TouchableOpacity, StatusBar, StyleSheet, Image, Linking, ScrollView, Dimensions, TouchableHighlight } from 'react-native'
+import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import IconSLI from 'react-native-vector-icons/SimpleLineIcons'
 import IconAnt from 'react-native-vector-icons/AntDesign'
+import IconE from 'react-native-vector-icons/Entypo'
 
 const AllUserPost = () => (
-    <View style={[{ backgroundColor: '#ff4081', height: 200 }]} />
+    <View style={[{ height: 200 }]} />
 );
 
 const TaggedPost = () => (
-    <View style={[{ backgroundColor: '#673ab7', height: 200 }]} />
+    <View style={[{ height: 200 }]} />
 );
-
 
 class Profile extends Component {
     constructor() {
@@ -22,8 +22,13 @@ class Profile extends Component {
                 { key: 'first', title: 'First' },
                 { key: 'second', title: 'Second' },
             ],
+            screenWidth: Dimensions.get('window').width
         }
     }
+    _onPressButton = () => {
+        alert("Pressed")
+    }
+
 
     render() {
         return (
@@ -31,8 +36,9 @@ class Profile extends Component {
                 <StatusBar backgroundColor="#f0f0f0" barStyle="dark-content" />
 
                 <View style={[styles.tempNav, { justifyContent: "space-between" }]} >
-                    <View style={{ paddingHorizontal: 10 }}>
-                        <Text style={{ fontWeight: "600" }}>feri_ferdinan_</Text>
+                    <View style={{ paddingHorizontal: 10, flexDirection: "row" }}>
+                        <Text style={{ fontWeight: "600", fontSize: 18 }}>feriferdinanid&nbsp;</Text>
+                        <IconE name="chevron-small-down" size={15} style={{ paddingTop: 2.5 }} />
                     </View>
                     <View style={{ paddingHorizontal: 10 }}>
                         <IconSLI name="menu" size={23} />
@@ -72,15 +78,15 @@ class Profile extends Component {
                     </View>
 
                     <View style={styles.wrapperButton}>
-                        <View style={styles.button}>
+                        <TouchableHighlight underlayColor="#ededed" onPress={() => this._onPressButton()} style={styles.button}>
                             <Text>Edit Profile</Text>
-                        </View>
-                        <View style={styles.button}>
+                        </TouchableHighlight>
+                        <TouchableHighlight underlayColor="#ededed" onPress={() => this._onPressButton()} style={styles.button}>
                             <Text>Promosi</Text>
-                        </View>
-                        <View style={styles.button}>
+                        </TouchableHighlight>
+                        <TouchableHighlight underlayColor="#ededed" onPress={() => this._onPressButton()} style={styles.button}>
                             <Text>Kontak</Text>
-                        </View>
+                        </TouchableHighlight>
                     </View>
 
                     <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
@@ -101,8 +107,14 @@ class Profile extends Component {
                             second: TaggedPost,
                         })}
                         onIndexChange={index => this.setState({ index })}
-                        initialLayout={{ width: Dimensions.get('window').width }}
+                        initialLayout={{ width: this.state.screenWidth }}
                         swipeEnabled={true}
+                        renderTabBar={props => (
+                            <TabBar
+                                {...props}
+                                style={{ backgroundColor: "#fff", color: "#aeaeae" }}
+                            />
+                        )}
                     />
 
                 </ScrollView>
@@ -139,7 +151,7 @@ const styles = StyleSheet.create({
     },
     button: {
         flex: 1,
-        borderWidth: StyleSheet.hairlineWidth,
+        borderWidth: 1,
         borderRadius: 5,
         paddingVertical: 5,
         marginHorizontal: 5,

@@ -4,17 +4,27 @@ import {
     View,
     Text,
     TouchableHighlight,
-    StatusBar
+    StatusBar,
+    ScrollView,
+    Dimensions
 } from 'react-native';
 import { PostFeed } from '../container'
 import IconFeather from 'react-native-vector-icons/Feather'
 import IconSLI from 'react-native-vector-icons/SimpleLineIcons'
 class MainFeed extends Component {
+    constructor() {
+        super()
+        this.state = {
+            screenWidth: Dimensions.get("window").width,
+            screenHeight: Dimensions.get("window").height,
+
+        }
+    }
 
     render() {
+        const { navigation } = this.props
         return (
             <View style={{ flex: 1 }} >
-                <StatusBar backgroundColor="#f0f0f0" barStyle="dark-content" />
                 <View style={[styles.tempNav, { justifyContent: "space-between" }]} >
                     <View style={{ flexDirection: "row" }}>
                         <TouchableHighlight style={styles.wrapperIcon} underlayColor="rgb(233,233,233)" onPress={() => alert("camera clicked")} >
@@ -31,7 +41,7 @@ class MainFeed extends Component {
                         </TouchableHighlight>
                     </View>
                 </View>
-                <PostFeed />
+                <PostFeed navigation={navigation} />
             </View >
         );
     }
@@ -45,12 +55,11 @@ const styles = StyleSheet.create({
         shadowColor: "#000",
         shadowOffset: {
             width: 0,
-            height: 0.1,
+            height: 1,
         },
-        shadowOpacity: 0.22,
-        shadowRadius: 0.22,
-
-        elevation: 1,
+        shadowOpacity: 0.20,
+        shadowRadius: 1.41,
+        elevation: 2,
         flexDirection: "row",
     },
     wrapperIcon: {

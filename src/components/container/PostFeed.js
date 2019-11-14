@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { FlatList } from "react-native"
 import { Post } from "../presentation"
-const axios = require('axios');
+import axios from 'axios';
+import { ACCESS_TOKEN } from 'react-native-dotenv'
 
 class PostFeed extends Component {
     constructor() {
@@ -12,17 +13,17 @@ class PostFeed extends Component {
         this.getData()
     }
     getData = () => {
-        that = this
-        axios.get('https://api.instagram.com/v1/users/self/media/recent/?access_token=2351680137.7e5a9ff.6f4761835f114b6181ec14dba95520ca')
-            .then(function (response) {
-                that.setState({ post: response.data.data })
+        axios.get(`https://api.instagram.com/v1/users/self/media/recent/?access_token=${ACCESS_TOKEN}`)
+            .then((response) => {
+                this.setState({ post: response.data.data })
+                console.log(response.data.data);
             })
-            .catch(function (error) {
+            .catch((error) => {
                 console.log(error);
             })
     }
     _renderPost({ item }) {
-        return <Post item={item} />
+        return <Post item={item} navigation={this.props.navigation} />
     }
     _returnKey(item) {
         return item.toString();
@@ -32,7 +33,6 @@ class PostFeed extends Component {
             data={this.state.post}
             renderItem={(item) => this._renderPost(item)}
             keyExtractor={(item, index) => item.id}
-            showsVerticalScrollIndicator={false}
         />;
     }
 }
